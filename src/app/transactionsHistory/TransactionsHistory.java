@@ -1,4 +1,4 @@
-package app.transactionHistory;
+package app.transactionsHistory;
 
 
 import app.Entities.Bankaccount;
@@ -53,7 +53,7 @@ public class TransactionsHistory {
 
     @FXML
     private void initialize(){
-        System.out.println("initialize transactionHistory");
+        System.out.println("initialize transactionsHistory");
         setChoiceBox();
         listener();
     }
