@@ -163,7 +163,7 @@ public class TransferController {
         }
     }
 
-    @FXML void goToAccount() { switchScene("/app/transactionsHistory/transactionsHistory.fxml"); }
+    @FXML void goToAccount() { switchScene("/app/transactionHistory/transactionsHistory.fxml"); }
 
 
     @FXML void goToHome()  {

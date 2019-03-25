@@ -74,7 +74,7 @@ public class HomeController {
         }
     }
 
-    @FXML void goToAccount() { switchScene("/app/transactionsHistory/transactionsHistory.fxml"); }
+    @FXML void goToAccount() { switchScene("/app/transactionHistory/transactionsHistory.fxml"); }
 
     @FXML void goToTransfer()  {
         switchScene("/app/transfer/transfer.fxml");
