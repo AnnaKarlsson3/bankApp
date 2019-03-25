@@ -1,12 +1,8 @@
-package app.cardPayment;
+package app.OutsideBank;
 
-import app.Entities.B;
 import app.Entities.Bankaccount;
 import app.db.DB;
 import app.login.LoginController;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class CardPayment {
 

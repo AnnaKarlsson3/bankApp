@@ -1,15 +1,12 @@
-package app.account;
+package app.transactionHistory;
 
 
-import app.Entities.B;
 import app.Entities.Bankaccount;
 import app.Entities.Transaction;
 import app.Main;
 import app.db.DB;
 import app.login.LoginController;
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -23,11 +20,9 @@ import javafx.scene.layout.VBox;
 import javafx.util.StringConverter;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
-public class AccountController {
+public class TransactionsHistory {
 
     @FXML
     VBox transactionBox;
@@ -58,7 +53,7 @@ public class AccountController {
 
     @FXML
     private void initialize(){
-        System.out.println("initialize account");
+        System.out.println("initialize transactionHistory");
         setChoiceBox();
         listener();
     }
