@@ -122,7 +122,7 @@ public abstract class DB {
     public static List<Transaction> getTransactions(int accountId, int offset){ return getTransactions(accountId, offset, offset + 10); }
     public static List<Transaction> getTransactions(int accountId, int offset, int limit){
         List<Transaction> result = null;
-        PreparedStatement ps = prep("bla bla from transactions WHERE transactionHistory-id = "+accountId+" LIMIT "+limit" OFFSET "+offset+" );
+        PreparedStatement ps = prep("bla bla from transactions WHERE transactionsHistory-id = "+accountId+" LIMIT "+limit" OFFSET "+offset+" );
         try {
             result = (List<Transaction>)new ObjectMapper<>(Transaction.class).map(ps.executeQuery());
         } catch (Exception e) { e.printStackTrace(); }
