@@ -18,8 +18,13 @@ public class CardPayment {
         //accountnumberBank SEB
         String accountnumberBank = "50342343234";
 
+        //get accountType whit limit 1
+        Bankaccount getType = DB.getTypeOfUser("Cardaccount", LoginController.getUser().getId(),1);
+        String type = getType.getType();
+
+        System.out.println(type);
         //get accountnumberUser of type
-        bankaccountnumberUser = DB.getCardAccountOfType("Cardaccount",LoginController.getUser().getId());
+        bankaccountnumberUser = DB.getCardAccountOfType(type,LoginController.getUser().getId());
         String accountnumberUser = bankaccountnumberUser.getAccountnumber();
 
         //get amount of accountnumber

@@ -49,6 +49,17 @@ public abstract class DB {
         return result;
     }
 
+    public static Bankaccount getTypeOfUser(String type, long userId, int limit){
+        Bankaccount result = null;
+        PreparedStatement ps = prep("SELECT type FROM bankaccounts WHERE type = ? AND user_id = ? LIMIT " +limit);
+        try {
+            ps.setString(1, type);
+            ps.setLong(2, userId);
+            result = (Bankaccount) new ObjectMapper<>(Bankaccount.class).mapOne(ps.executeQuery());
+        } catch (Exception e) { e.printStackTrace(); }
+        return result;
+    }
+
     public static Bankaccount getAccountFromAccountnumber(String accountnumber){
         Bankaccount result = null;
         PreparedStatement ps = prep("SELECT * FROM bankaccounts WHERE accountnumber = ?" );

@@ -35,8 +35,12 @@ public class Salary implements Runnable{
     }
 
     public void getFromDB(){
+        //get accountType whit limit 1
+        Bankaccount getType = DB.getTypeOfUser("Salaryaccount", LoginController.getUser().getId(),1);
+        String type = getType.getType();
+
         //get accountnumberUser of type
-        Bankaccount bankaccountnumberUser  = DB.getCardAccountOfType("Salaryaccount", LoginController.getUser().getId());
+        Bankaccount bankaccountnumberUser  = DB.getCardAccountOfType(type, LoginController.getUser().getId());
         accountnumberUser = bankaccountnumberUser.getAccountnumber();
 
         //get amount of accountnumber

@@ -6,6 +6,7 @@ import app.OutsideBank.CardPayment;
 import app.OutsideBank.Salary;
 import app.db.DB;
 import app.login.LoginController;
+import app.switchScene.SwitchScene;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -43,7 +44,7 @@ public class HomeController {
     @FXML
     Button  changeAccountNamebtn;
 
-    private CardPayment cardPayment = new CardPayment();
+
     Salary salaryClass = new Salary();
     Thread salaryThread = new Thread(salaryClass, "salaryThread");
 
@@ -74,26 +75,16 @@ public class HomeController {
         userLabel.setText( LoginController.getUser().getFirstname() + " " + LoginController.getUser().getLastname());
     }
 
-    @FXML void switchScene(String pathname)  {
-        try {
-            Parent bla = FXMLLoader.load(getClass().getResource(pathname));
-            Scene scene = new Scene(bla, 800 , 600);
-            Main.stage.setScene(scene);
-            Main.stage.show();
-        } catch (IOException e1) {
-            e1.printStackTrace();
-        }
-    }
 
-    @FXML void goToAccount() { switchScene("/app/transactionsHistory/transactionsHistory.fxml"); }
+
+    @FXML void goToAccount() { SwitchScene.switchScene("/app/transactionsHistory/transactionsHistory.fxml"); }
 
     @FXML void goToTransfer()  {
-        switchScene("/app/transfer/transfer.fxml");
+        SwitchScene.switchScene("/app/transfer/transfer.fxml");
     }
 
-    @FXML void goToCreateNewAccount(){switchScene("/app/createaccount/createNewAccount.fxml");}
+    @FXML void goToCreateNewAccount(){SwitchScene.switchScene("/app/createaccount/createNewAccount.fxml");}
 
     @FXML void cardPayment(){
-        cardPayment.drawMoneyFromCardAccount();
     }
 }

@@ -2,6 +2,7 @@ package app.transfer;
 
 import app.Entities.Bankaccount;
 import app.Main;
+import app.OutsideBank.CardPayment;
 import app.db.DB;
 import app.login.LoginController;
 import javafx.fxml.FXML;
@@ -52,6 +53,7 @@ public class TransferController {
 
     private List<Bankaccount> accounts = DB.getaccountsOfUser(LoginController.getUser().getId());
     private Bankaccount bankaccount = null;
+    private CardPayment cardPayment = new CardPayment();
 
     @FXML
     private void initialize(){
@@ -171,7 +173,7 @@ public class TransferController {
 
     }
 
-    @FXML void cardPayment(){}
+    @FXML void cardPayment(){cardPayment.drawMoneyFromCardAccount();}
 
 
 }
