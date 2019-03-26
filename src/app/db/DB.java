@@ -66,9 +66,8 @@ public abstract class DB {
             ps.setString(1, accountNumber);
             result = (Bankaccount) new ObjectMapper<>(Bankaccount.class).mapOne(ps.executeQuery());
         } catch (Exception e) { e.printStackTrace(); }
-        return result; // return User;
+        return result;
     }
-
 
     public static List<Transaction> getTransactionOfBankaccount(String accountnumber, int limit, int offset){
         List<Transaction> result = null;
@@ -78,14 +77,11 @@ public abstract class DB {
             ps.setString(2, accountnumber);
             result = (List<Transaction>)(List<?>) new ObjectMapper<>(Transaction.class).map(ps.executeQuery());
         } catch (Exception e) { e.printStackTrace(); }
-        return result; // return User;
+        return result;
     }
 
 
-
-
-
-
+    //inserts
     public static void transactionToOwnAccounts(String message, Double amount, String fromAccountNumber, String toAccountNumber){
         PreparedStatement ps = prep("INSERT INTO transactions VALUES(NULL, NULL, ?, ?, ?, ?, NULL)");
         try {
@@ -97,38 +93,59 @@ public abstract class DB {
         } catch (Exception e) { e.printStackTrace(); }
     }
 
-
-
-    public static void updateAmountInBankaccount(Double amount, String accountNumber){
-        PreparedStatement ps = prep("UPDATE bankaccounts SET amount = ? WHERE accountnumber = ?");
+    public static void createNewAccount(String accountnumber, String type, String name, double amount, long userId){
+        PreparedStatement ps = prep("INSERT INTO bankaccounts VALUES(NULL, ?, ?, ?, ?, ?)");
         try {
-            ps.setDouble(1, amount);
-            ps.setString(2, accountNumber);
+            ps.setString(1, accountnumber);
+            ps.setString(2, type);
+            ps.setString(3, name);
+            ps.setDouble(4, amount);
+            ps.setLong(5, userId);
+            ps.executeUpdate();
+        } catch (Exception e) { e.printStackTrace(); }
+    }
 
+    public static void transactionToOwnAccountsSalary(String message, Double amount, String toAccountNumber){
+        PreparedStatement ps = prep("INSERT INTO transactions VALUES(NULL, NULL, ?, ?, NULL, ?, NULL)");
+        try {
+            ps.setString(1, message);
+            ps.setDouble(2, amount);
+            ps.setString(3, toAccountNumber);
             ps.executeUpdate();
         } catch (Exception e) { e.printStackTrace(); }
     }
 
 
-
-
-
-
-
-
-    /*
-        Example method with default parameters
-    public static List<Transaction> getTransactions(int accountId){ return getTransactions(accountId, 0, 10); }
-    public static List<Transaction> getTransactions(int accountId, int offset){ return getTransactions(accountId, offset, offset + 10); }
-    public static List<Transaction> getTransactions(int accountId, int offset, int limit){
-        List<Transaction> result = null;
-        PreparedStatement ps = prep("bla bla from transactions WHERE transactionsHistory-id = "+accountId+" LIMIT "+limit" OFFSET "+offset+" );
+    //Updates
+    public static void updateAmountInBankaccount(double amount, String accountNumber){
+        PreparedStatement ps = prep("UPDATE bankaccounts SET amount = ? WHERE accountnumber = ?");
         try {
-            result = (List<Transaction>)new ObjectMapper<>(Transaction.class).map(ps.executeQuery());
+            ps.setDouble(1, amount);
+            ps.setString(2, accountNumber);
+            ps.executeUpdate();
         } catch (Exception e) { e.printStackTrace(); }
-        return result; // return User;
     }
-    */
+
+    public static void updateAccountNameInBankaccount(String oldAccountName, String newAccountName, long userId){
+        PreparedStatement ps = prep("UPDATE bankaccounts SET accountname = ? WHERE accountname = ? AND user_id = ?");
+        try {
+            ps.setString(1, newAccountName);
+            ps.setString(2, oldAccountName);
+            ps.setLong(3, userId);
+            ps.executeUpdate();
+        } catch (Exception e) { e.printStackTrace(); }
+    }
+
+
+    //Deletes
+    public static void deleteAccountNumber(String accountNumber){
+        PreparedStatement ps = prep("DELETE FROM bankaccounts WHERE accountnumber = ?");
+        try {
+            ps.setString(1, accountNumber);
+            ps.executeUpdate();
+        } catch (Exception e) { e.printStackTrace(); }
+    }
+
 
 
 }

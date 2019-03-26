@@ -27,12 +27,12 @@ public class Transaction {
     @Column("time")
     private java.sql.Timestamp date;
 
-    public ZonedDateTime getDate() {
-        return Instant.ofEpochMilli(date.getTime()).atZone(ZoneId.of("Europe/Berlin"));
+    public String getDate() {
+        return getDateAsZonedDateTime().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME).replace('T', ' ');
     }
 
-    public String getDateAsString(){
-        return getDate().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME).replace('T', ' ');
+    public ZonedDateTime  getDateAsZonedDateTime(){
+        return Instant.ofEpochMilli(date.getTime()).atZone(ZoneId.of("Europe/Berlin"));
     }
 
     public String getMessage() { return message; }

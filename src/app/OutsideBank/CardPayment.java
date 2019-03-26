@@ -15,16 +15,16 @@ public class CardPayment {
 
         Double drawAmount = 200.00;
 
+        //accountnumberBank SEB
+        String accountnumberBank = "50342343234";
+
         //get accountnumberUser of type
         bankaccountnumberUser = DB.getCardAccountOfType("Cardaccount",LoginController.getUser().getId());
         String accountnumberUser = bankaccountnumberUser.getAccountnumber();
 
-        //get accountnumberBank of type
-        String accountnumberBank = "50342343234";
-
         //get amount of accountnumber
         bankaccount  = DB.getAmountOfAccountNumber(accountnumberUser);
-        Double oldBalance = bankaccount.getAmount();
+        double oldBalance = bankaccount.getAmount();
 
         if(oldBalance > drawAmount) {
             String message = "CardPayment";

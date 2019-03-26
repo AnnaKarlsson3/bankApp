@@ -55,11 +55,12 @@ public class TransactionsHistory {
     private void initialize(){
         System.out.println("initialize transactionsHistory");
         setChoiceBox();
-        listener();
+
     }
 
     void setChoiceBox(){
 
+        choiceBox.getItems().clear();
         choiceBox.getItems().addAll(accounts);
 
         choiceBox.setConverter(new StringConverter<Bankaccount>() {
@@ -72,6 +73,7 @@ public class TransactionsHistory {
         });
         choiceBox.setValue(accounts.get(0));
         setTable(accounts.get(0));
+        listener();
 
     }
 
@@ -83,7 +85,7 @@ public class TransactionsHistory {
 
     void setTable(Bankaccount newValue){
 
-         String accountnumber = newValue.getAccountnumber();
+         String accountnumber = newValue.getAccountnumber(); //gives null when you havent switch choice
          List<Transaction> trans = DB.getTransactionOfBankaccount(accountnumber, limit, offset);
 
         //PropertyValueFactory will fetch the necessary data from your object
@@ -98,8 +100,8 @@ public class TransactionsHistory {
 
     @FXML
     void loadMore(){
-        limit = limit + 100;
-        choiceBox.getItems().clear();
+        limit = limit + 10;
+        //offset = offset + 10;
         setChoiceBox();
     }
 
