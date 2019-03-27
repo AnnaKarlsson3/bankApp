@@ -45,11 +45,6 @@
                               <Button fx:id="sendmoneybtn" layoutX="114.0" layoutY="363.0" mnemonicParsing="false" onAction="#sendMoney" text="Send" />
                               <TextField fx:id="messagefield" layoutX="47.0" layoutY="219.0" prefHeight="31.0" prefWidth="203.0" />
                               <Label layoutX="48.0" layoutY="187.0" text="Message" />
-                              <Label fx:id="sentlabel" layoutX="25.0" layoutY="410.0" prefHeight="45.0" prefWidth="265.0" text="Successful transfer" textFill="#c60a0a">
-                                 <font>
-                                    <Font size="30.0" />
-                                 </font>
-                              </Label>
                            </children>
                         </AnchorPane>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="262.0" prefWidth="450.0">
@@ -63,11 +58,6 @@
                               <Button fx:id="sendMoneyTO" layoutX="112.0" layoutY="365.0" mnemonicParsing="false" onAction="#sendMoneyToOther" text="Send" />
                               <Label layoutX="50.0" layoutY="191.0" text="Message" />
                               <TextField fx:id="messagefield2" layoutX="50.0" layoutY="219.0" />
-                              <Label fx:id="sentlabel2" layoutX="22.0" layoutY="410.0" prefHeight="45.0" prefWidth="265.0" text="Successful transfer" textFill="#c60a0a">
-                                 <font>
-                                    <Font size="30.0" />
-                                 </font>
-                              </Label>
                            </children>
                         </AnchorPane>
                     </items>

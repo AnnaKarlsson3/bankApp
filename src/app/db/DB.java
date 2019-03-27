@@ -3,9 +3,7 @@ package app.db;
 import app.Entities.Bankaccount;
 import app.Entities.Transaction;
 import app.Entities.User;
-
 import java.sql.PreparedStatement;
-import java.text.DecimalFormat;
 import java.util.List;
 
 /** A Helper class for interacting with the Database using short-commands */
@@ -15,6 +13,7 @@ public abstract class DB {
         return Database.getInstance().prepareStatement(SQLQuery);
     }
 
+    /**Select*/
     public static User getMatchingUser(String username, String password){
         User result = null;
         PreparedStatement ps = prep("SELECT * FROM users WHERE username = ? AND password = ?");
@@ -25,7 +24,6 @@ public abstract class DB {
         } catch (Exception e) { e.printStackTrace(); }
         return result; // return User;
     }
-
 
     public static List<Bankaccount> getaccountsOfUser(long userId){
         List<Bankaccount> result = null;
@@ -91,9 +89,8 @@ public abstract class DB {
         return result;
     }
 
-
-    //inserts
-    public static void transactionToOwnAccounts(String message, Double amount, String fromAccountNumber, String toAccountNumber){
+    /**inserts*/
+    public static void transactionToOwnAccounts(String message, double amount, String fromAccountNumber, String toAccountNumber){
         PreparedStatement ps = prep("INSERT INTO transactions VALUES(NULL, NULL, ?, ?, ?, ?, NULL)");
         try {
             ps.setString(1, message);
@@ -116,7 +113,7 @@ public abstract class DB {
         } catch (Exception e) { e.printStackTrace(); }
     }
 
-    public static void transactionToOwnAccountsSalary(String message, Double amount, String toAccountNumber){
+    public static void transactionToOwnAccountsSalary(String message, double amount, String toAccountNumber){
         PreparedStatement ps = prep("INSERT INTO transactions VALUES(NULL, NULL, ?, ?, NULL, ?, NULL)");
         try {
             ps.setString(1, message);
@@ -126,8 +123,7 @@ public abstract class DB {
         } catch (Exception e) { e.printStackTrace(); }
     }
 
-
-    //Updates
+    /**Updates*/
     public static void updateAmountInBankaccount(double amount, String accountNumber){
         PreparedStatement ps = prep("UPDATE bankaccounts SET amount = ? WHERE accountnumber = ?");
         try {
@@ -147,8 +143,7 @@ public abstract class DB {
         } catch (Exception e) { e.printStackTrace(); }
     }
 
-
-    //Deletes
+    /**Deletes*/
     public static void deleteAccountNumber(String accountNumber){
         PreparedStatement ps = prep("DELETE FROM bankaccounts WHERE accountnumber = ?");
         try {
@@ -156,7 +151,5 @@ public abstract class DB {
             ps.executeUpdate();
         } catch (Exception e) { e.printStackTrace(); }
     }
-
-
 
 }

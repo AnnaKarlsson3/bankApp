@@ -37,18 +37,14 @@ public class Transaction {
 
     public String getMessage() { return message; }
     public double getAmount() { return amount; }
-
-
     public String getFromAccountNumber() {
         return fromAccountNumber;
     }
     public long getToAccountId() {
         return toAccountId;
     }
-
     public String getToAccountNumber(){
         return toAccountNumber;
     }
-
 
 }

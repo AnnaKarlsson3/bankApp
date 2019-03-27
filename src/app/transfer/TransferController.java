@@ -1,21 +1,15 @@
 package app.transfer;
 
 import app.Entities.Bankaccount;
-import app.Main;
 import app.OutsideBank.CardPayment;
 import app.db.DB;
 import app.login.LoginController;
+import app.switchScene.SwitchScene;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.util.StringConverter;
-
-import java.io.IOException;
 import java.util.List;
 
 public class TransferController {
@@ -41,30 +35,29 @@ public class TransferController {
     @FXML
     TextField messagefield;
     @FXML
-    Label sentlabel;
-    @FXML
     Button sendMoneyTO;
     @FXML
     TextField messagefield2;
-    @FXML
-    Label sentlabel2;
     @FXML
     Button cardpaymentT;
 
     private List<Bankaccount> accounts = DB.getaccountsOfUser(LoginController.getUser().getId());
     private Bankaccount bankaccount = null;
     private CardPayment cardPayment = new CardPayment();
+    private String fromAccount;
+    private String toAccount;
+    private double amount;
+    private String message;
+    private double oldBalanceFROM;
+    private double newBalanceFROM;
 
     @FXML
     private void initialize(){
         System.out.println("initialize transfer");
         populateChoiceBoxes();
-        sentlabel.setVisible(false);
-        sentlabel2.setVisible(false);
     }
 
     void populateChoicebox(ChoiceBox choicebox){
-        //populate choiceBox from bankaccount
         choicebox.getItems().addAll(accounts);
 
         choicebox.setConverter(new StringConverter<Bankaccount>() {
@@ -84,94 +77,91 @@ public class TransferController {
         populateChoicebox(choiceBoxFM2);
     }
 
-    void fromMyAccountToMyAccount(){
-        //Send money between your own accountnumber
-        //Log in transactions
-        String fromAccount = ((Bankaccount) choiceBoxFM1.getSelectionModel().selectedItemProperty().get()).getAccountnumber();
-        String toAccount = ((Bankaccount) choiceBoxTM.getSelectionModel().selectedItemProperty().get()).getAccountnumber();
-        Double amount = Double.valueOf(amountFieldM.getText());
-        String message = messagefield.getText();
+    /**Send money between your own accountnumbers*/
+    void insertInTransactionHistory() {
+        fromAccount = ((Bankaccount) choiceBoxFM1.getSelectionModel().selectedItemProperty().get()).getAccountnumber();
+        toAccount = ((Bankaccount) choiceBoxTM.getSelectionModel().selectedItemProperty().get()).getAccountnumber();
+        amount = Double.valueOf(amountFieldM.getText());
+        message = messagefield.getText();
 
         DB.transactionToOwnAccounts(message, amount, fromAccount, toAccount);
+    }
 
-        //Update balance/amount in FROM bankaccount
-        Double oldBalanceFROM = ((Bankaccount) choiceBoxFM1.getSelectionModel().selectedItemProperty().get()).getAmount();
-        Double newBalanceFROM = oldBalanceFROM - amount;
+    void updateBalanceInFromBankaccount(){
+        oldBalanceFROM = ((Bankaccount) choiceBoxFM1.getSelectionModel().selectedItemProperty().get()).getAmount();
+        newBalanceFROM = oldBalanceFROM - amount;
 
-        DB.updateAmountInBankaccount(newBalanceFROM, fromAccount);
+       amountController();
+    }
 
-        //Update balance/amount in TO bankaccount
-        Double oldBalanceTO = ((Bankaccount) choiceBoxTM.getSelectionModel().selectedItemProperty().get()).getAmount();
-        Double newBalanceTO = oldBalanceTO + amount;
+    void updateBalanceInToBankaccount(){
+        double oldBalanceTO = ((Bankaccount) choiceBoxTM.getSelectionModel().selectedItemProperty().get()).getAmount();
+        double newBalanceTO = oldBalanceTO + amount;
 
         DB.updateAmountInBankaccount(newBalanceTO, toAccount);
     }
 
     @FXML void sendMoney(){
-        fromMyAccountToMyAccount();
-        sentlabel.setVisible(true);
+        insertInTransactionHistory();
+        updateBalanceInFromBankaccount();
+        updateBalanceInToBankaccount();
+        System.out.println("Transfer success");
+        SwitchScene.switchScene("/app/transfer/transfer.fxml");
 
     }
 
-    void fromMyAccountToOtherAccount(){
-    //hämta type och accountnumber från bankaccount
-    //Läs in banknummer från textfield
-        String fromAccount = ((Bankaccount) choiceBoxFM2.getSelectionModel().selectedItemProperty().get()).getAccountnumber();
-        String toAccount = textFieldTO.getText();
-        Double amount = Double.valueOf(amountFieldO.getText());
-        String message = messagefield2.getText();
 
+    /**Send money to other accountnumbers*/
+    void insertInTransactionHistoryOther() {
+        fromAccount = ((Bankaccount) choiceBoxFM2.getSelectionModel().selectedItemProperty().get()).getAccountnumber();
+        toAccount = textFieldTO.getText();
+        amount = Double.valueOf(amountFieldO.getText());
+        message = messagefield2.getText();
+
+        //is reciver in DB:
         Bankaccount reciver = DB.getAccountFromAccountnumber(toAccount);
-
-        //TODO kolla om det är 0 på kontot!
-        //kollar om motagare finns i databasen
-        if(reciver != null) {
-        DB.transactionToOwnAccounts(message, amount, fromAccount, toAccount);
-
-        //Update balance/amount in FROM bankaccount
-        Double oldBalanceFROM = ((Bankaccount) choiceBoxFM2.getSelectionModel().selectedItemProperty().get()).getAmount();
-        Double newBalanceFROM = oldBalanceFROM - amount;
-
-        DB.updateAmountInBankaccount(newBalanceFROM, fromAccount);
-
-
-        //TODO kolla om man skickar kontonr utanför db - if(toAccount.equals())
-            //Update balance/amount in TO bankaccount
-            bankaccount = DB.getAmountOfAccountNumber(toAccount);
-            Double oldBalanceTO = bankaccount.getAmount();
-            Double newBalanceTO = oldBalanceTO + amount;
-
-            DB.updateAmountInBankaccount(newBalanceTO, toAccount);
+        if (reciver != null) {
+            DB.transactionToOwnAccounts(message, amount, fromAccount, toAccount);
+        }else{
+            System.out.println("Accountnumber do not exists in swedenbanksdatabas!");
         }
-        else{
-            System.out.println("Kontonummer finns ej i swedenbanksdatabas!");
-        }
+    }
+
+    void UpdateBalanceFrombankaccountOther() {
+        oldBalanceFROM = ((Bankaccount) choiceBoxFM2.getSelectionModel().selectedItemProperty().get()).getAmount();
+        newBalanceFROM = oldBalanceFROM - amount;
+
+        amountController();
+    }
+
+    void UpdateBalanceToBankaccountOther() {
+        bankaccount = DB.getAmountOfAccountNumber(toAccount);
+        double oldBalanceTO = bankaccount.getAmount();
+        double newBalanceTO = oldBalanceTO + amount;
+
+        DB.updateAmountInBankaccount(newBalanceTO, toAccount);
     }
 
     @FXML void sendMoneyToOther(){
-        fromMyAccountToOtherAccount();
+        insertInTransactionHistoryOther();
+        UpdateBalanceFrombankaccountOther();
+        UpdateBalanceToBankaccountOther();
+        System.out.println("Transfer success");
+        SwitchScene.switchScene("/app/transfer/transfer.fxml");
     }
 
-
-
-    @FXML void switchScene(String pathname)  {
-        try {
-            Parent bla = FXMLLoader.load(getClass().getResource(pathname));
-            Scene scene = new Scene(bla, 800 , 600);
-            Main.stage.setScene(scene);
-            Main.stage.show();
-        } catch (IOException e1) {
-            e1.printStackTrace();
+    /**if your current balance is less than amount or you haven´t input any amount:*/
+    void amountController(){
+        if(oldBalanceFROM < amount){
+            System.out.println("You dont have enought money!");
+        }else {
+            DB.updateAmountInBankaccount(newBalanceFROM, fromAccount);
         }
     }
 
-    @FXML void goToAccount() { switchScene("/app/transactionsHistory/transactionsHistory.fxml"); }
+    @FXML void goToAccount() { SwitchScene.switchScene("/app/transactionsHistory/transactionsHistory.fxml"); }
 
-
-    @FXML void goToHome()  {
-        switchScene("/app/home/home.fxml");
-
-    }
+    @FXML void goToHome() { SwitchScene.switchScene("/app/home/home.fxml"); }
 
     @FXML void cardPayment(){cardPayment.drawMoneyFromCardAccount();}
 

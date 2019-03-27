@@ -31,7 +31,6 @@
                         <Font name="Sitka Text" size="18.0" />
                      </font>
                   </Label>
-                  <Button fx:id="cardpaymentH" layoutX="30.0" layoutY="451.0" mnemonicParsing="false" onAction="#cardPayment" text="CardPayment 200kr" />
                </children>
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
@@ -54,9 +53,8 @@
                         <TableColumn fx:id="amountC" prefWidth="103.0" text="Balance" />
                     </columns>
                   </TableView>
-                  <Button fx:id="createNewAccountbtn" layoutX="47.0" layoutY="519.0" mnemonicParsing="false" onAction="#goToCreateNewAccount" text="Create new account" />
-                  <Button fx:id="deleteAccountbtn" layoutX="231.0" layoutY="519.0" mnemonicParsing="false" text="Delete account" />
-                  <Button fx:id="changeAccountNamebtn" layoutX="376.0" layoutY="519.0" mnemonicParsing="false" text="Change account name" />
+                  <Button fx:id="createNewAccountbtn" layoutX="348.0" layoutY="523.0" mnemonicParsing="false" onAction="#goToCreateNewAccount" prefHeight="31.0" prefWidth="60.0" text="Go" />
+                  <Label layoutX="47.0" layoutY="528.0" prefHeight="21.0" prefWidth="301.0" text="Create/Delet account, Update account name:" />
                </children>
             </AnchorPane>
         </items>

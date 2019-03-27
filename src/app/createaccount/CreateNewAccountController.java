@@ -3,14 +3,13 @@ package app.createaccount;
 import app.Entities.Bankaccount;
 import app.db.DB;
 import app.login.LoginController;
+import app.switchScene.SwitchScene;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.util.StringConverter;
-
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -33,6 +32,8 @@ public class CreateNewAccountController {
     TextField textfieldNewAccountName;
     @FXML
     Button updatebtn;
+    @FXML
+    Button backToHomebtn;
 
     List<Bankaccount> accounts = DB.getaccountsOfUser(LoginController.getUser().getId());
     String newAccountNumber;
@@ -44,6 +45,7 @@ public class CreateNewAccountController {
         populateUpdateChoiceBox();
     }
 
+    /**Create new account*/
     void populateCreateNewAccountChoiceBox(){
         List <String> typeChoices = new ArrayList<>();
         typeChoices.add("Salaryaccount");
@@ -64,13 +66,12 @@ public class CreateNewAccountController {
 
             StringBuilder sb = new StringBuilder();
 
-            for (Long s : randomList) {
+            for (long s : randomList) {
                 sb.append(s);
             }
 
             sb.toString();
             newAccountNumber = String.valueOf(sb);
-            System.out.println(newAccountNumber);
 
             //check if accountnumber already exict in DB
             Bankaccount numberExcist = DB.getAccountFromAccountnumber(newAccountNumber);
@@ -80,12 +81,10 @@ public class CreateNewAccountController {
             else{
                 System.out.println("generating new accountnumber");
             }
-
         }
     }
 
     @FXML void createAccount(){
-
         createRandomAccountNumber();
         String accountName = textfieldAccontName.getText();
         double amount = 0;
@@ -94,8 +93,7 @@ public class CreateNewAccountController {
         DB.createNewAccount(newAccountNumber, type, accountName, amount, LoginController.getUser().getId());
     }
 
-
-    //populera choicebox med accountnumbers skicka vald accountnumber till DB.delete
+    /**Delete account*/
     void populateDeleteChoiceBox (){
 
         chooseAccountDelete.getItems().addAll(accounts);
@@ -117,6 +115,7 @@ public class CreateNewAccountController {
         DB.deleteAccountNumber(accountnumber);
     }
 
+    /**Update account*/
     void populateUpdateChoiceBox(){
         chooseAccountName.getItems().addAll(accounts);
 
@@ -132,11 +131,11 @@ public class CreateNewAccountController {
     }
 
     @FXML void updateAccountName(){
-        //uppdatera accountname i db med det nya
         String oldAccountName = ((Bankaccount) chooseAccountDelete.getSelectionModel().selectedItemProperty().get()).getAccountname();
         String newAccountName = textfieldNewAccountName.getText();
 
         DB.updateAccountNameInBankaccount(oldAccountName, newAccountName, LoginController.getUser().getId());
-
     }
+
+    @FXML void goToHome() { SwitchScene.switchScene("/app/home/home.fxml"); }
 }

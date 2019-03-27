@@ -1,31 +1,22 @@
 package app.transactionsHistory;
 
-
 import app.Entities.Bankaccount;
 import app.Entities.Transaction;
-import app.Main;
 import app.db.DB;
 import app.login.LoginController;
+import app.switchScene.SwitchScene;
 import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.VBox;
 import javafx.util.StringConverter;
-
-import java.io.IOException;
 import java.util.List;
 
 public class TransactionsHistory {
 
-    @FXML
-    VBox transactionBox;
     @FXML
     Button overviewbtn;
     @FXML
@@ -44,8 +35,6 @@ public class TransactionsHistory {
     Button transferbtn;
     @FXML
     Button loadmorebtn;
-    @FXML
-    Button cardpaymentA;
 
     private int offset = 0;
     private int limit = 10;
@@ -55,11 +44,9 @@ public class TransactionsHistory {
     private void initialize(){
         System.out.println("initialize transactionsHistory");
         setChoiceBox();
-
     }
 
     void setChoiceBox(){
-
         choiceBox.getItems().clear();
         choiceBox.getItems().addAll(accounts);
 
@@ -71,10 +58,9 @@ public class TransactionsHistory {
 
             @Override public Bankaccount fromString(String string) { return null; }
         });
-        choiceBox.setValue(accounts.get(0));
-        setTable(accounts.get(0));
+        choiceBox.setValue(accounts.get(0)); //TODO: Change! - setting choiceBox back to first option, also when you press loadmoreBtn!
         listener();
-
+        setTable(accounts.get(0));
     }
 
     void listener() {
@@ -84,8 +70,7 @@ public class TransactionsHistory {
     }
 
     void setTable(Bankaccount newValue){
-
-         String accountnumber = newValue.getAccountnumber(); //gives null when you havent switch choice
+         String accountnumber = newValue.getAccountnumber(); //TODO: gives null when you press loadmoreBtn!
          List<Transaction> trans = DB.getTransactionOfBankaccount(accountnumber, limit, offset);
 
         //PropertyValueFactory will fetch the necessary data from your object
@@ -93,41 +78,18 @@ public class TransactionsHistory {
         messageC.setCellValueFactory(new PropertyValueFactory<>("message"));
         amountC.setCellValueFactory(new PropertyValueFactory<>("amount"));
 
-
         tableViewTrans.getItems().clear();
         tableViewTrans.getItems().addAll(trans);
     }
 
     @FXML
-    void loadMore(){
+    void loadMore(){ //TODO: Hämtar loadmore för alla konton!!
         limit = limit + 10;
-        //offset = offset + 10;
         setChoiceBox();
     }
 
+    @FXML void goToHome() { SwitchScene.switchScene("/app/home/home.fxml"); }
 
-
-    @FXML void switchScene(String pathname)  {
-        try {
-            Parent bla = FXMLLoader.load(getClass().getResource(pathname));
-            Scene scene = new Scene(bla, 800 , 600);
-            Main.stage.setScene(scene);
-            Main.stage.show();
-        } catch (IOException e1) {
-            e1.printStackTrace();
-        }
-    }
-
-    @FXML void goToHome() { switchScene("/app/home/home.fxml"); }
-
-
-    @FXML void goToTransfer()  {
-        switchScene("/app/transfer/transfer.fxml");
-
-    }
-
-    @FXML void cardPayment(){}
-
-
+    @FXML void goToTransfer()  { SwitchScene.switchScene("/app/transfer/transfer.fxml"); }
 
 }

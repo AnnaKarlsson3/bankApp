@@ -23,8 +23,4 @@ public class User {
     public String getFirstname(){return firstname;}
     public String getLastname(){return lastname;}
 
-    @Override
-    public String toString(){
-        return String.format("User: { id: %d, username: %s }", id, username);
-    }
 }

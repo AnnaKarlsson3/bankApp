@@ -25,6 +25,6 @@
       <Button fx:id="createbtn" layoutX="589.0" layoutY="119.0" mnemonicParsing="false" onAction="#createAccount" prefHeight="31.0" prefWidth="100.0" text="Create" />
       <Button fx:id="deletebtn" layoutX="362.0" layoutY="285.0" mnemonicParsing="false" onAction="#deleteAccout" prefHeight="31.0" prefWidth="100.0" text="Delete" />
       <Button fx:id="updatebtn" layoutX="589.0" layoutY="445.0" mnemonicParsing="false" onAction="#updateAccountName" prefHeight="31.0" prefWidth="100.0" text="Update" />
-      <Button layoutX="333.0" layoutY="524.0" mnemonicParsing="false" text="Back to Overview" />
+      <Button fx:id="backToHomebtn" layoutX="333.0" layoutY="524.0" mnemonicParsing="false" onAction="#goToHome" text="Back to Overview" />
    </children>
 </AnchorPane>

@@ -3,7 +3,6 @@ package app.OutsideBank;
 import app.Entities.Bankaccount;
 import app.db.DB;
 import app.login.LoginController;
-import javafx.fxml.FXML;
 
 public class Salary implements Runnable{
 
@@ -19,7 +18,7 @@ public class Salary implements Runnable{
 
                 getFromDB();
                 String message = "SalaryPayment";
-                Double newBalance = oldBalance + salary;
+                double newBalance = oldBalance + salary;
                 //insert transactionUser
                 DB.transactionToOwnAccountsSalary(message, salary, accountnumberUser);
                 //update User balance/amount on card
@@ -31,7 +30,6 @@ public class Salary implements Runnable{
                 e.printStackTrace();
             }
         }
-
     }
 
     public void getFromDB(){
@@ -48,5 +46,5 @@ public class Salary implements Runnable{
         oldBalance = bankaccount.getAmount();
     }
 
-}//class end
+}
 

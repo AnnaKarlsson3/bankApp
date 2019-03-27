@@ -22,5 +22,4 @@ public class Bankaccount {
     public double getAmount() { return amount; }
     public String getType() { return type; }
 
-
 }
