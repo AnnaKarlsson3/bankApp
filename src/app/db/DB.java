@@ -91,7 +91,7 @@ public abstract class DB {
 
     /**inserts*/
     public static void transactionToOwnAccounts(String message, double amount, String fromAccountNumber, String toAccountNumber){
-        PreparedStatement ps = prep("INSERT INTO transactions VALUES(NULL, NULL, ?, ?, ?, ?, NULL)");
+        PreparedStatement ps = prep("INSERT INTO transactions VALUES(NULL, NULL, ?, ?, ?, ?)");
         try {
             ps.setString(1, message);
             ps.setDouble(2, amount);
@@ -114,7 +114,7 @@ public abstract class DB {
     }
 
     public static void transactionToOwnAccountsSalary(String message, double amount, String toAccountNumber){
-        PreparedStatement ps = prep("INSERT INTO transactions VALUES(NULL, NULL, ?, ?, NULL, ?, NULL)");
+        PreparedStatement ps = prep("INSERT INTO transactions VALUES(NULL, NULL, ?, ?, NULL, ?)");
         try {
             ps.setString(1, message);
             ps.setDouble(2, amount);
@@ -144,6 +144,15 @@ public abstract class DB {
     }
 
     /**Deletes*/
+    public static void deleteTransactionOnAccountnumber(String accountNumber){
+        PreparedStatement ps = prep("DELETE FROM transactions WHERE fromaccountnumber = ? OR toaccountnumber = ?");
+        try {
+            ps.setString(1, accountNumber);
+            ps.setString(2, accountNumber);
+            ps.executeUpdate();
+        } catch (Exception e) { e.printStackTrace(); }
+    }
+
     public static void deleteAccountNumber(String accountNumber){
         PreparedStatement ps = prep("DELETE FROM bankaccounts WHERE accountnumber = ?");
         try {

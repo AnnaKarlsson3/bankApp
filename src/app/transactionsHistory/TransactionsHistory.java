@@ -39,11 +39,14 @@ public class TransactionsHistory {
     private int offset = 0;
     private int limit = 10;
     private  List<Bankaccount> accounts = DB.getaccountsOfUser(LoginController.getUser().getId());
+    private Bankaccount currentBankAccount = accounts.get(0);
 
     @FXML
     private void initialize(){
         System.out.println("initialize transactionsHistory");
         setChoiceBox();
+        setTable(currentBankAccount);
+        listener();
     }
 
     void setChoiceBox(){
@@ -58,19 +61,19 @@ public class TransactionsHistory {
 
             @Override public Bankaccount fromString(String string) { return null; }
         });
-        choiceBox.setValue(accounts.get(0)); //TODO: Change! - setting choiceBox back to first option, also when you press loadmoreBtn!
-        listener();
-        setTable(accounts.get(0));
+        choiceBox.setValue(accounts.get(0));
     }
 
     void listener() {
         choiceBox.getSelectionModel().selectedItemProperty().addListener((ChangeListener<Object>) (observableValue, old, neww) -> {
-            setTable((Bankaccount) neww);
+            currentBankAccount = (Bankaccount) neww;
+            limit = 10;
+            setTable(currentBankAccount);
         });
     }
 
     void setTable(Bankaccount newValue){
-         String accountnumber = newValue.getAccountnumber(); //TODO: gives null when you press loadmoreBtn!
+         String accountnumber = newValue.getAccountnumber();
          List<Transaction> trans = DB.getTransactionOfBankaccount(accountnumber, limit, offset);
 
         //PropertyValueFactory will fetch the necessary data from your object
@@ -83,9 +86,9 @@ public class TransactionsHistory {
     }
 
     @FXML
-    void loadMore(){ //TODO: Hämtar loadmore för alla konton!!
-        limit = limit + 10;
-        setChoiceBox();
+    void loadMore(){
+        limit = limit + 100;
+        setTable(currentBankAccount);
     }
 
     @FXML void goToHome() { SwitchScene.switchScene("/app/home/home.fxml"); }

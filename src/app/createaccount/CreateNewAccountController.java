@@ -35,8 +35,8 @@ public class CreateNewAccountController {
     @FXML
     Button backToHomebtn;
 
-    List<Bankaccount> accounts = DB.getaccountsOfUser(LoginController.getUser().getId());
-    String newAccountNumber;
+    private List<Bankaccount> accounts = DB.getaccountsOfUser(LoginController.getUser().getId());
+    private String newAccountNumber;
 
     @FXML
     private void initialize(){
@@ -111,7 +111,7 @@ public class CreateNewAccountController {
 
     @FXML void deleteAccout(){
         String accountnumber = ((Bankaccount) chooseAccountDelete.getSelectionModel().selectedItemProperty().get()).getAccountnumber();
-
+        DB.deleteTransactionOnAccountnumber(accountnumber);
         DB.deleteAccountNumber(accountnumber);
     }
 
@@ -131,8 +131,9 @@ public class CreateNewAccountController {
     }
 
     @FXML void updateAccountName(){
-        String oldAccountName = ((Bankaccount) chooseAccountDelete.getSelectionModel().selectedItemProperty().get()).getAccountname();
+        String oldAccountName = ((Bankaccount) chooseAccountName.getSelectionModel().selectedItemProperty().get()).getAccountname();
         String newAccountName = textfieldNewAccountName.getText();
+        System.out.println(oldAccountName);
 
         DB.updateAccountNameInBankaccount(oldAccountName, newAccountName, LoginController.getUser().getId());
     }

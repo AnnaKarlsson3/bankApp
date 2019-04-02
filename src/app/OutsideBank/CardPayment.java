@@ -6,8 +6,6 @@ import app.login.LoginController;
 
 public class CardPayment {
 
-    public CardPayment(){}
-
     public void drawMoneyFromCardAccount(){
 
         double drawAmount = 200.00;

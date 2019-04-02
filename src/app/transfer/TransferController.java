@@ -91,7 +91,7 @@ public class TransferController {
         oldBalanceFROM = ((Bankaccount) choiceBoxFM1.getSelectionModel().selectedItemProperty().get()).getAmount();
         newBalanceFROM = oldBalanceFROM - amount;
 
-       amountController();
+        DB.updateAmountInBankaccount(newBalanceFROM, fromAccount);
     }
 
     void updateBalanceInToBankaccount(){
@@ -99,15 +99,14 @@ public class TransferController {
         double newBalanceTO = oldBalanceTO + amount;
 
         DB.updateAmountInBankaccount(newBalanceTO, toAccount);
+        System.out.println("Transfer success");
     }
 
     @FXML void sendMoney(){
         insertInTransactionHistory();
         updateBalanceInFromBankaccount();
         updateBalanceInToBankaccount();
-        System.out.println("Transfer success");
         SwitchScene.switchScene("/app/transfer/transfer.fxml");
-
     }
 
 
@@ -131,7 +130,7 @@ public class TransferController {
         oldBalanceFROM = ((Bankaccount) choiceBoxFM2.getSelectionModel().selectedItemProperty().get()).getAmount();
         newBalanceFROM = oldBalanceFROM - amount;
 
-        amountController();
+        DB.updateAmountInBankaccount(newBalanceFROM, fromAccount);
     }
 
     void UpdateBalanceToBankaccountOther() {
@@ -148,15 +147,6 @@ public class TransferController {
         UpdateBalanceToBankaccountOther();
         System.out.println("Transfer success");
         SwitchScene.switchScene("/app/transfer/transfer.fxml");
-    }
-
-    /**if your current balance is less than amount or you haven´t input any amount:*/
-    void amountController(){
-        if(oldBalanceFROM < amount){
-            System.out.println("You dont have enought money!");
-        }else {
-            DB.updateAmountInBankaccount(newBalanceFROM, fromAccount);
-        }
     }
 
     @FXML void goToAccount() { SwitchScene.switchScene("/app/transactionsHistory/transactionsHistory.fxml"); }

@@ -6,9 +6,9 @@ import app.login.LoginController;
 
 public class Salary implements Runnable{
 
-    String accountnumberUser;
-    double oldBalance;
-    double salary = 1000;
+    private String accountnumberUser;
+    private double oldBalance;
+    private double salary = 1000;
 
     @Override
     public void run() {
@@ -25,7 +25,7 @@ public class Salary implements Runnable{
                 DB.updateAmountInBankaccount(newBalance, accountnumberUser);
 
             try {
-                Thread.sleep(30000);
+                Thread.sleep(60000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
